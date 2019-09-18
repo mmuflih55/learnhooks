@@ -6,7 +6,7 @@ const Footer = () => {
 
     return (
         <div>
-            Ini Footer {con.state.profile.name}
+            2019@{con.state.profile.name}
         </div>
     )
 }

@@ -6,7 +6,6 @@ const reducer = (state,action) => {
 		case 'gantinama':{
 			return {...state,profile:{name:action.val}}
 		}
-        break;
         default:
             return state
 	}
