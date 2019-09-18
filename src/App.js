@@ -1,15 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import React,{ useContext,useReducer } from 'react';
+import Reducer from './Reducer'
 import './App.css';
+const UserContext = React.createContext({});
 
-function App() {
+const Header = ()=>{
+  const con = useContext(UserContext)
+  const handleChange = (v)=>{
+    let val = v.target.value;
+    con.dispatch({type:'gantinama',val:val})
+  }
+  return(
+    <div>
+      <input type="text" onChange={handleChange}></input>
+      Ini Header {con.state.profile.name}
+      {/* Ini Header {JSON.stringify(con)} */}
+    </div>
+  )
+}
+
+const Footer = ()=>{
+  const con = useContext(UserContext)
+
+  return(
+    <div>
+      Ini Footer {con.state.profile.name}
+    </div>
+  )
+}
+
+const App = () => {
+  const {state,dispatch} = Reducer();
+
   return (
-    <div className="App">
+    <UserContext.Provider value={{state,dispatch}}>
+      <Header/>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
         <a
           className="App-link"
           href="https://reactjs.org"
@@ -19,7 +44,8 @@ function App() {
           Learn React
         </a>
       </header>
-    </div>
+      <Footer />
+    </UserContext.Provider>
   );
 }
 
