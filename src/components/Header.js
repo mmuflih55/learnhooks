@@ -2,6 +2,34 @@ import React, { useContext, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { UserContext } from './../Context'
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import Slide from '@material-ui/core/Slide';
+
+
+const MenuAppBar = () => {
+  const trigger = useScrollTrigger();
+  return (
+    <React.Fragment>
+      <CssBaseline />
+        <Slide appear={false} direction="down" in={!trigger}>
+        <AppBar>
+          <Toolbar>
+            <Typography variant="h6">Scroll to Hide App Bar</Typography>
+          </Toolbar>
+        </AppBar>
+      </Slide>
+      <Toolbar />
+    </React.Fragment>
+  );
+}
+
 
 const CheckLogin = ()=>{
     const con = useContext(UserContext);
@@ -19,6 +47,7 @@ const CheckLogin = ()=>{
         if(state.username.trim()!==''&&state.password.trim()!==''){
             setCookie('token', 'udah ada token');
             window.location.reload()
+        }else{
         }
     }
     
@@ -26,7 +55,7 @@ const CheckLogin = ()=>{
         removeCookie('token');
         window.location.reload()
     }
-    
+
     return cookies.token ? (
         <div>
             Ini Header {con.state.profile.name}
@@ -50,6 +79,7 @@ const Header = () => {
 
     return (
         <div>
+            <MenuAppBar/>
             <CheckLogin/>
             <br/>
             <Link to="/"> Home</Link>
