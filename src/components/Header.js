@@ -4,8 +4,9 @@ import { UserContext } from './../Context'
 import { Link } from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Slide, AppBar, Toolbar, useScrollTrigger, InputBase, Badge, IconButton } from '@material-ui/core';
-import { More, Menu, Search, Mail, Notifications, AccountCircle } from '@material-ui/icons';
+import { Slide, AppBar, Toolbar, useScrollTrigger, InputBase, Badge, IconButton,MenuItem,Menu } from '@material-ui/core';
+import { More, Search, Mail, Notifications, AccountCircle } from '@material-ui/icons';
+import MenuIcon from '@material-ui/icons/Menu'
 import { fade, makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -72,15 +73,68 @@ const useStyles = makeStyles(theme => ({
 
 const MenuAppBar = () => {
   const classes = useStyles();
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const menuId = 'primary-search-account-menu';
 
+  const menuId = 'primary-search-account-menu';
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+    </Menu>
+  );
+
+  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem>
+        <IconButton aria-label="show 4 new mails" color="inherit">
+          <Badge badgeContent={4} color="secondary">
+            <Mail />
+          </Badge>
+        </IconButton>
+        <p>Messages</p>
+      </MenuItem>
+      <MenuItem>
+        <IconButton aria-label="show 11 new notifications" color="inherit">
+          <Badge badgeContent={11} color="secondary">
+            <Notifications />
+          </Badge>
+        </IconButton>
+        <p>Notifications</p>
+      </MenuItem>
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        <p>Profile</p>
+      </MenuItem>
+    </Menu>
+  );
+  
   function handleProfileMenuOpen(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -111,7 +165,7 @@ const MenuAppBar = () => {
               color="inherit"
               aria-label="open drawer"
             >
-              <Menu />
+              <MenuIcon />
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
               Material-UI
@@ -167,9 +221,24 @@ const MenuAppBar = () => {
         </AppBar>
       </Slide>
       <Toolbar />
+      {renderMenu}
+      {renderMobileMenu}
     </React.Fragment>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 const CheckLogin = () => {
@@ -214,15 +283,9 @@ const CheckLogin = () => {
 }
 
 const Header = () => {
-  // const setkukis = () => {
-  //     // setCookie('token', con.state.profile.name);
-  // }
-
   return (
     <div>
       <MenuAppBar />
-      <CheckLogin />
-      <br />
       <Link to="/"> Home</Link>
       <Link to="/profile"> Profile</Link>
       <Link to="/detail"> Detail</Link>
