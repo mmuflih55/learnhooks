@@ -12,7 +12,7 @@ const MyRoute = () => {
     return (
         <Router>
             <Header />
-            <Container style={{height:'2000px'}}>
+            <Container style={{height:'85vh',marginTop:'15px',display:'flex',justifyContent:'center'}}>
                 <Suspense fallback={<div>Loading...</div>}>
                     <Switch>
                         <Route path="/" exact component={() => <Home />} />

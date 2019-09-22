@@ -1,84 +1,47 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { UserContext } from './../Context'
+// import { UserContext } from './../Context'
 import { Link } from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Slide, AppBar, Toolbar, useScrollTrigger, InputBase, Badge, IconButton,MenuItem,Menu } from '@material-ui/core';
+import { Slide, AppBar, Toolbar, useScrollTrigger, InputBase, Badge, IconButton, MenuItem, Menu, Button, ButtonBase } from '@material-ui/core';
 import { More, Search, Mail, Notifications, AccountCircle } from '@material-ui/icons';
-import MenuIcon from '@material-ui/icons/Menu'
-import { fade, makeStyles } from '@material-ui/core/styles';
-const useStyles = makeStyles(theme => ({
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    width: theme.spacing(7),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: 200,
-    },
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-}));
+import MenuIcon from '@material-ui/icons/Menu';
+import useStyles from '../Style/Style';
 
 
 const MenuAppBar = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  // const con = useContext(UserContext);
+  const [cookies, setCookie, removeCookie] = useCookies(['name']);
+  const [state, setState] = useState({ username: '', password: '' })
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
   const menuId = 'primary-search-account-menu';
+  const mobileMenuId = 'primary-search-account-menu-mobile';
+
+  const handleChange = (v) => {
+    let val = v.target.value;
+    let name = v.target.name;
+    setState({ ...state, [name]: val })
+    // con.dispatch({ type: 'gantinama', val: val })
+  }
+
+  const login = () => {
+    if (state.username.trim() !== '' && state.password.trim() !== '') {
+      setCookie('token', 'udah ada token');
+      window.location.reload()
+    } else {
+    }
+  }
+
+  const logout = () => {
+    removeCookie('token');
+    window.location.reload()
+  }
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -89,12 +52,39 @@ const MenuAppBar = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {cookies.token ? (
+        <div className={classes.loginContainer}>
+          <MenuItem component={Link} to="/profile">
+              Profile
+          </MenuItem>
+          <Button
+            onClick={logout}
+            className={classes.loginBtn}>logout</Button>
+        </div>
+      ) : (
+          <div className={classes.loginContainer}>
+            <label>Username :</label>
+            <InputBase
+              placeholder="Username"
+              name="username"
+              className={classes.inputLogin}
+              onChange={handleChange}
+            />
+            <label>Password :</label>
+            <InputBase
+              className={classes.inputLogin}
+              placeholder="Password"
+              name="password"
+              onChange={handleChange}
+            />
+            <Button
+              onClick={login}
+              className={classes.loginBtn}>Login</Button>
+          </div>
+        )}
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -105,36 +95,70 @@ const MenuAppBar = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <Mail />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <Notifications />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      {cookies.token ? (
+        <div>
+          <MenuItem>
+            <IconButton aria-label="show 4 new mails" color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <Mail />
+              </Badge>
+            </IconButton>
+            <p>Messages</p>
+          </MenuItem>
+          <MenuItem>
+            <IconButton aria-label="show 11 new notifications" color="inherit">
+              <Badge badgeContent={11} color="secondary">
+                <Notifications />
+              </Badge>
+            </IconButton>
+            <p>Notifications</p>
+          </MenuItem>
+          <MenuItem onClick={handleProfileMenuOpen}>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <p>Profile</p>
+          </MenuItem>
+        </div>
+      ) : (
+          <div>
+            <MenuItem>
+              <IconButton aria-label="show 4 new mails" color="inherit">
+                <Badge badgeContent={4} color="secondary">
+                  <Mail />
+                </Badge>
+              </IconButton>
+              <p>Messages</p>
+            </MenuItem>
+            <MenuItem>
+              <IconButton aria-label="show 11 new notifications" color="inherit">
+                <Badge badgeContent={11} color="secondary">
+                  <Notifications />
+                </Badge>
+              </IconButton>
+              <p>Notifications</p>
+            </MenuItem>
+            <MenuItem onClick={handleProfileMenuOpen}>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="primary-search-account-menu"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <p>Profile</p>
+            </MenuItem>
+          </div>
+        )}
     </Menu>
   );
-  
+
   function handleProfileMenuOpen(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -159,6 +183,7 @@ const MenuAppBar = () => {
       <Slide appear={false} direction="down" in={!trigger}>
         <AppBar>
           <Toolbar>
+            <div className={classes.sectionMobile}>
             <IconButton
               edge="start"
               className={classes.menuButton}
@@ -167,9 +192,24 @@ const MenuAppBar = () => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h6" noWrap>
-              Material-UI
-            </Typography>
+            </div>
+            <div className={classes.sectionDesktop}>
+              <ButtonBase disableRipple component={Link} to="/">
+                <Typography className={classes.tab} noWrap>
+                  Home
+                </Typography>
+              </ButtonBase>
+              <ButtonBase disableRipple component={Link} to="/profile">
+                <Typography className={classes.tab} noWrap>
+                  Profile
+                </Typography>
+              </ButtonBase>
+              <ButtonBase disableRipple component={Link} to="/detail">
+                <Typography className={classes.tab} noWrap>
+                  Detail
+                </Typography>
+              </ButtonBase>
+            </div>
             <div className={classes.grow} />
             <div className={classes.search}>
               <div className={classes.searchIcon}>
@@ -185,16 +225,16 @@ const MenuAppBar = () => {
               />
             </div>
             <div className={classes.sectionDesktop}>
-              <IconButton aria-label="show 4 new mails" color="inherit">
+              {cookies.token ? (<div><IconButton aria-label="show 4 new mails" color="inherit">
                 <Badge badgeContent={4} color="secondary">
                   <Mail />
                 </Badge>
               </IconButton>
-              <IconButton aria-label="show 17 new notifications" color="inherit">
-                <Badge badgeContent={17} color="secondary">
-                  <Notifications />
-                </Badge>
-              </IconButton>
+                <IconButton aria-label="show 17 new notifications" color="inherit">
+                  <Badge badgeContent={17} color="secondary">
+                    <Notifications />
+                  </Badge>
+                </IconButton></div>) : null}
               <IconButton
                 edge="end"
                 aria-label="account of current user"
@@ -228,67 +268,10 @@ const MenuAppBar = () => {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-const CheckLogin = () => {
-  const con = useContext(UserContext);
-  const [cookies, setCookie, removeCookie] = useCookies(['name']);
-  const [state, setState] = useState({ username: '', password: '' })
-
-  const handleChange = (v) => {
-    let val = v.target.value;
-    let name = v.target.name;
-    setState({ ...state, [name]: val })
-    // con.dispatch({ type: 'gantinama', val: val })
-  }
-
-  const login = () => {
-    if (state.username.trim() !== '' && state.password.trim() !== '') {
-      setCookie('token', 'udah ada token');
-      window.location.reload()
-    } else {
-    }
-  }
-
-  const logout = () => {
-    removeCookie('token');
-    window.location.reload()
-  }
-
-  return cookies.token ? (
-    <div>
-      Ini Header {con.state.profile.name}
-      <button onClick={logout}>Log Out</button>
-    </div>
-  ) : (
-      <div>
-        <label>Username</label>
-        <input name="username" placeholder="Username" type="text" onChange={handleChange}></input>
-        <label>Password</label>
-        <input name="password" placeholder="Password" type="text" onChange={handleChange}></input>
-        <button onClick={login}>Login</button>
-      </div>
-    )
-}
-
 const Header = () => {
   return (
     <div>
       <MenuAppBar />
-      <Link to="/"> Home</Link>
-      <Link to="/profile"> Profile</Link>
-      <Link to="/detail"> Detail</Link>
     </div>
   )
 }
