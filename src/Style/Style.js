@@ -3,10 +3,14 @@ const useStyles = makeStyles(theme => ({
     grow: {
         flexGrow: 1,
     },
+    loadingContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '200px'
+    },
     container: {
-        padding:'5px 15px 5px 15px'
-        // paddingLeft: '10px',
-        // paddingRight: '10px'
+        padding: '5px 15px 5px 15px'
     },
     menuButton: {
         marginRight: theme.spacing(2),
