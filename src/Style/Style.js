@@ -9,6 +9,14 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         minHeight: '200px'
     },
+    postlistcon: {
+        height: 'auto', 
+        overflowY: 'none',
+        [theme.breakpoints.up('sm')]: {
+            height: '80vh',
+            overflowY: 'scroll',
+        },
+    },
     container: {
         padding: '5px 15px 5px 15px'
     },

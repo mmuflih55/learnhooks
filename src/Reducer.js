@@ -5,7 +5,10 @@ const reducer = (state,action) => {
 	switch (action.type){
 		case 'gantinama':{
 			return {...state,profile:{name:action.val}}
-		}
+        }
+        case 'setAlert':{
+            return {...state,alertData:{...state.alertData,...action.val}}
+        }
         default:
             return state
 	}
@@ -14,6 +17,12 @@ const reducer = (state,action) => {
 const initState = {
     profile:{
         name: "Muhammad Muflih"
+    },
+    alertData:{
+        isAlertOpen: false,
+        alertMsg: '',
+        alertTitle: '',
+        alertType: '', 
     }
 }
 

@@ -26,7 +26,7 @@ const Home = () => {
                 </Paper>
             </Grid>
             <Grid item xs={12} md={8}>
-                <Paper className={classes.container} style={{height: '80vh', overflowY:'scroll'}}>
+                <Paper className={[classes.container,classes.postlistcon]}>
                     {state.isLoading === true ? (
                         <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'inherit'}}>
                             <CircularProgress  />

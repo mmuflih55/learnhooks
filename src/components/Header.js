@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { useCookies } from 'react-cookie';
-// import { UserContext } from './../Context'
+import { UserContext } from './../Context'
 import { Link } from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,7 +14,7 @@ const MenuAppBar = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  // const con = useContext(UserContext);
+  const con = useContext(UserContext);
   const [cookies, setCookie, removeCookie] = useCookies(['name']);
   const [state, setState] = useState({ username: '', password: '' })
   const isMenuOpen = Boolean(anchorEl);
@@ -29,11 +29,22 @@ const MenuAppBar = () => {
     // con.dispatch({ type: 'gantinama', val: val })
   }
 
+  const openAlert = (isOpen,msg,title,type)=>{
+    let val = {
+      isAlertOpen: isOpen,
+      alertMsg: msg,
+      alertTitle: title,
+      alertType: type, 
+    }
+    con.dispatch({ type: 'setAlert', val: val })
+  }
+
   const login = () => {
     if (state.username.trim() !== '' && state.password.trim() !== '') {
       setCookie('token', 'udah ada token');
       window.location.reload()
     } else {
+      openAlert(true,"Mohon masukan username dan password terlebih dahulu","Login Error","error");
     }
   }
 
