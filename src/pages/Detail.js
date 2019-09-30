@@ -11,7 +11,6 @@ const Detail = ({ match }) => {
         function fdata() {
             axios.get(`https://www.googleapis.com/blogger/v3/blogs/4606092665974021629/posts/${match.params.id}?key=AIzaSyDci4ioLXX-x0SsC88MOQk399SO0PMPR14`)
                 .then((res) => {
-                    console.log(res);
                     setState((s) => ({ ...s, isLoading:false,   data: res.data }));
                 });
         }
