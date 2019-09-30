@@ -65,8 +65,8 @@ const MenuAppBar = () => {
     >
       {cookies.token ? (
         <div className={classes.loginContainer}>
-          <MenuItem component={Link} to="/profile">
-              Profile
+          <MenuItem component={Link} to="/blogs">
+              Blogs
           </MenuItem>
           <Button
             onClick={logout}
@@ -210,16 +210,12 @@ const MenuAppBar = () => {
                   Home
                 </Typography>
               </ButtonBase>
-              <ButtonBase disableRipple component={Link} to="/profile">
+              <ButtonBase disableRipple component={Link} to="/blogs">
                 <Typography className={classes.tab} noWrap>
-                  Profile
+                  Blogs
                 </Typography>
               </ButtonBase>
-              <ButtonBase disableRipple component={Link} to="/detail">
-                <Typography className={classes.tab} noWrap>
-                  Detail
-                </Typography>
-              </ButtonBase>
+
             </div>
             <div className={classes.grow} />
             <div className={classes.search}>

@@ -17,6 +17,11 @@ const useStyles = makeStyles(theme => ({
             overflowY: 'scroll',
         },
     },
+    btn:{
+        '&:hover': {
+            cursor: 'pointer',
+        }
+    },
     container: {
         padding: '5px 15px 5px 15px'
     },
