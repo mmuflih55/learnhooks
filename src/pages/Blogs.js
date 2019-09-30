@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Paper, Card, CircularProgress, CardMedia, CardContent, ButtonBase, Input } from '@material-ui/core';
+import { Grid, Paper, Card, CircularProgress, CardMedia, CardContent, ButtonBase, InputBase } from '@material-ui/core';
+import { Search } from '@material-ui/icons';
 import axios from 'axios';
 import useStyles from '../Style/Style';
 
@@ -24,10 +25,9 @@ const Home = ({ history }) => {
             const parser = new DOMParser();
             let c = parser.parseFromString(v.content, 'text/html');
             let sel = c.querySelector('img')
-            console.log("checkimage")
-            if(sel===null){
+            if (sel === null) {
                 return null;
-            }else{
+            } else {
                 return sel.src;
             }
         } else {
@@ -37,8 +37,8 @@ const Home = ({ history }) => {
     }
 
     useEffect(() => {
+        setState((s) => ({ ...s, isLoading: true }));
         function fdata() {
-            console.log("init data")
             axios.get(`https://www.googleapis.com/blogger/v3/blogs/4606092665974021629/posts?key=AIzaSyDci4ioLXX-x0SsC88MOQk399SO0PMPR14${state.nextPageToken === '' ? '' : '&pageToken=' + state.nextPageToken}&fetchImages=true`)
                 .then((res) => {
                     setState((s) => ({ ...s, isLoading: false, data: [...s.data, ...res.data.items], pagetoken: res.data.nextPageToken }));
@@ -46,11 +46,8 @@ const Home = ({ history }) => {
         }
 
         function searchData() {
-            console.log("search data")
             axios.get(`https://www.googleapis.com/blogger/v3/blogs/4606092665974021629/posts/search?q=${state.search}&key=AIzaSyDci4ioLXX-x0SsC88MOQk399SO0PMPR14${state.nextPageToken === '' ? '' : '&pageToken=' + state.nextPageToken}&fetchImages=true`)
                 .then((res) => {
-                    console.log("search result");
-                    console.log(res);
                     setState((s) => ({ ...s, isLoading: false, data: res.data.items, pagetoken: res.data.nextPageToken }));
                 });
         }
@@ -65,9 +62,22 @@ const Home = ({ history }) => {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} md={4} >
-                <Paper className={classes.container}>
+                <Paper className={classes.container} style={{paddingBottom:15}}>
                     <h1>Search</h1>
-                    <Input onKeyDown={search} />
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <Search />
+                        </div>
+                        <InputBase
+                            onKeyDown={search}
+                            placeholder="Enter Search "
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                            inputProps={{ 'aria-label': 'search' }}
+                        />
+                    </div>
                 </Paper>
             </Grid>
             <Grid item xs={12} md={8}>

@@ -12,7 +12,7 @@ const MyRoute = () => {
     return (
         <Router>
             <Header />
-            <Container style={{minHeight:'85vh',marginTop:'15px',display:'flex',justifyContent:'center'}}>
+            <Container style={{minHeight:'82vh',marginTop:'15px',display:'flex',justifyContent:'center'}}>
                 <Suspense fallback={<CircularProgress  />}>
                     <Switch>
                         <Route path="/" exact component={() => <Profile />} />

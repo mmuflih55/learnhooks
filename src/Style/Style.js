@@ -3,6 +3,9 @@ const useStyles = makeStyles(theme => ({
     grow: {
         flexGrow: 1,
     },
+    profileBg:{
+        background: 'linear-gradient(0deg, rgba(83,100,195,1) 8%, rgba(117,178,237,1) 90%)'
+    },
     loadingContainer: {
         display: 'flex',
         justifyContent: 'center',
@@ -41,15 +44,13 @@ const useStyles = makeStyles(theme => ({
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
+        backgroundColor: fade(theme.palette.common.black, 0.15),
         '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
+            backgroundColor: fade(theme.palette.common.black, 0.25),
         },
-        marginRight: theme.spacing(2),
         marginLeft: 0,
         width: '100%',
         [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(3),
             width: 'auto',
         },
     },
